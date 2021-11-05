@@ -174,12 +174,15 @@ metadata:
     tier: ${3:tier}
 spec:
   capacity:
-    storage: ${4:20Gi}
+  ${4:storageClassName: ${5:standard}}
+    storage: ${5:20Gi}
   accessModes:
-    - ${5:ReadWriteMany}
-  nfs:
-    server: ${6:NameOrIP}
-    path: ${7:"/share/path/on/server"}
+    - ${6:ReadWriteMany}
+#  nfs:
+#    server: NameOrIP
+#    path: /share/path/on/server
+#  hostPath:
+#    path: x
 endsnippet
 
 snippet pvc "PersistentVolumeClaim" !b
@@ -194,7 +197,7 @@ metadata:
 spec:
   ${4:storageClassName: ${5:standard}}
   accessModes:
-    - ${6:ReadWriteOnce}
+    - ${6:ReadWriteMany}
   resources:
     requests:
       # The amount of the volume's storage to request
