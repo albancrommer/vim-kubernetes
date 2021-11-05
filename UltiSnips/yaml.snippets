@@ -155,6 +155,15 @@ spec:
               number: $7
 endsnippet
 
+snippet sc "StorageClass" !b
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: ${1:manual}
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+endsnippet
+
 snippet pv "PersistentVolume" !b
 apiVersion: v1
 kind: PersistentVolume
