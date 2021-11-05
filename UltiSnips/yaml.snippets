@@ -352,20 +352,39 @@ endsnippet
 
 
 snippet netp "NetworkPolicy" !b
-kind: NetworkPolicy
+
 apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
 metadata:
-  namespace: ${1:ns}
-  name: ${2:mypolicy}
+  namespace: ${1:default}
+  name: ${2:netpol}
 spec:
   podSelector:
     matchLabels:
-      ${3:app}: ${4:loki}
+      ${3:app}: ${4:dep}
+  policyTypes:
+    - Ingress
+    - Egress
   ingress:
-    - from: 
-          - namespaceSelector:
-        matchLabels:
-          ${5:$4}: ${6:"true"}
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              ${5:app}: ${6:dep}
+        - podSelector:
+            matchLabels:
+              ${5:app}: ${6:dep}
+      ports:
+        - protocol: TCP
+          port: ${7:port}
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 10.0.0.0/24
+            except:
+               - 172.17.1.0/24
+      ports:
+        - protocol: TCP
+          port: 5978
 endsnippet
 
 snippet probe "Liveness/Readiness Probes" !b
